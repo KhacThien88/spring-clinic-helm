@@ -12,23 +12,17 @@ pipeline {
         string(name: 'visits_service_branch', defaultValue: 'main', description: 'Branch cho visits-service')
     }
 
-    environment {
-        DOCKERHUB_USERNAME = 'thuanlp'
-        SPRING_REPO = 'https://github.com/ThuanPhuc27/spring-petclinic-microservices.git'
-        CHART_REPO = 'github.com/ThuanPhuc27/Petclinic_HelmChart.git'
-    }
-
     stages {
         stage('Checkout HelmChart Repo') {
             steps {
-                    sh "rm -rf Petclinic_HelmChart"
-                    sh "git clone https://github.com/ThuanPhuc27/Petclinic_HelmChart"
+                        sh "rm -rf spring-clinic-helm"
+                        sh "git clone https://github.com/KhacThien88/spring-clinic-helm"
             }
         }
 
         stage('Helm Install dev-review') {
             steps {
-                dir('Petclinic_HelmChart') {
+                dir('spring-clinic-helm') {
                     script {
                         def services = [
                             [name: "config-server", branch: params.config_server_branch],
