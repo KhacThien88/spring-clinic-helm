@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: genai-service-dev
+  namespace: argocd   # namespace ArgoCD đang chạy, thường là argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: genai-service=thuanlp/spring-petclinic-genai-service:latest
+    argocd-image-updater.argoproj.io/genai-service.helm.image-name: image.repository
+    argocd-image-updater.argoproj.io/genai-service.helm.image-tag: image.tag
+    argocd-image-updater.argoproj.io/genai-service.update-strategy: digest
+    argocd-image-updater.argoproj.io/genai-service.allow-tags: latest
+    argocd-image-updater.argoproj.io/genai-service.pull-secret: pullsecret:argocd/dockerhub
+spec:
+  project: petclinic-dev
+  source:
+    repoURL: https://github.com/ThuanPhuc27/Petclinic_HelmChart
+    path: charts/genai-service
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace:  petclinic-dev   # namespace để deploy app config-server
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

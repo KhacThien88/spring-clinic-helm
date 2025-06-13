@@ -1,0 +1,14 @@
+appName: tracing-server
+env: dev
+service:
+  port: 9411
+  image: openzipkin/zipkin
+ingress:
+  domainName: tracing-server-dev.khacthienit.click
+  path: /
+  pathType: Prefix
+global:
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"

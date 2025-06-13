@@ -1,0 +1,13 @@
+{{- if .Values.configMap.discoveryServer.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Release.Namespace }}
+data:
+  application.properties: |
+    spring.application.name=discovery-server
+    spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}
+    logging.level.org.springframework.boot=INFO
+    logging.level.org.springframework.web=INFO
+{{- end }}

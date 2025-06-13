@@ -1,0 +1,20 @@
+apiVersion: v2
+name: vets-service
+description: A Helm chart for Spring Cloud Vets Service in PetClinic microservices
+type: application
+
+# Chart version (follows SemVer)
+version: 1.0.0
+
+# Version of the discovery Server application
+appVersion: latest
+
+# Maintainers
+maintainers:
+  - name: Thuan Phuc
+    email: thuanlephuc152@gmail.com
+
+dependencies:
+  - name: common
+    version: 1.0.0
+    repository: "file://../common"

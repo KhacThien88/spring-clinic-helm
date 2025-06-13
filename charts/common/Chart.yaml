@@ -1,0 +1,5 @@
+apiVersion: v2
+name: common
+version: 1.0.0
+description: A Helm library chart with shared templates
+type: library

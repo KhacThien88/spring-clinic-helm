@@ -1,0 +1,31 @@
+appName: petclinic-genai-service
+env: dev
+image:
+  repository: thuanlp/spring-petclinic-genai-service
+  tag: latest
+  pullSecret: dockerhub
+  pullPolicy: Always
+service:
+  port: 8084
+  type: ClusterIP
+initContainers:
+  - name: wait-for-config-server
+    image: darthcabs/tiny-tools:1
+    command: ["sh", "-c", "until curl -s http://petclinic-config-server-service:8888/; do echo waiting for config server; sleep 5; done"]
+  - name: wait-for-discovery-server
+    image: darthcabs/tiny-tools:1
+    command: ["sh", "-c", "until curl -s http://petclinic-discovery-server-service:8761/; do echo waiting for discovery server; sleep 5; done"]
+configMap:
+  genaiService:
+    create: true
+  name: petclinic-genai-service-application-properties-configmap
+
+ingress:
+  domainName: genai-service-dev.khacthienit.click
+  path: /
+  pathType: Prefix
+global:
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"

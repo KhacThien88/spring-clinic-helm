@@ -1,0 +1,31 @@
+appName: petclinic-vets-service
+env: dev
+image:
+  repository: thuanlp/spring-petclinic-vets-service
+  tag: latest
+  pullSecret: dockerhub
+  pullPolicy: Always
+service:
+  port: 8083
+  type: ClusterIP
+initContainers:
+  - name: wait-for-config-server
+    image: darthcabs/tiny-tools:1
+    command: ["sh", "-c", "until curl -s http://petclinic-config-server-service:8888/; do echo waiting for config server; sleep 5; done"]
+  - name: wait-for-discovery-server
+    image: darthcabs/tiny-tools:1
+    command: ["sh", "-c", "until curl -s http://petclinic-discovery-server-service:8761/; do echo waiting for discovery server; sleep 5; done"]
+configMap:
+  name: petclinic-vets-service-application-properties-configmap
+  vetsService:
+    create: true
+
+ingress:
+  domainName: vets-service-dev.khacthienit.click
+  path: /
+  pathType: Prefix
+global:
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"

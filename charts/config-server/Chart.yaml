@@ -1,0 +1,17 @@
+apiVersion: v2
+name: config-server
+description: A Helm chart for Spring Cloud Config Server in PetClinic microservices
+type: application
+
+version: 1.0.0
+
+appVersion: latest
+
+maintainers:
+  - name: Thuan Phuc
+    email: thuanlephuc152@gmail.com
+
+dependencies:
+  - name: common
+    version: 1.0.0
+    repository: "file://../common"

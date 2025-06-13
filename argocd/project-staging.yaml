@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: petclinic-staging
+  namespace: argocd
+spec:
+  description: Project cho các ứng dụng của hệ thống Petclinic
+
+  # Namespace mà các ứng dụng được phép deploy vào
+  destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
+
+  # Cho phép deploy ứng dụng từ các Git repo cụ thể
+  sourceRepos:
+    - 'https://github.com/ThuanPhuc27/*'
+
+  # Cho phép sử dụng tài nguyên cluster và namespace
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'

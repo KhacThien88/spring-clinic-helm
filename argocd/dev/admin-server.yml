@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: admin-server-dev
+  namespace: argocd   # namespace ArgoCD đang chạy, thường là argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: admin-server=thuanlp/spring-petclinic-admin-server:latest
+    argocd-image-updater.argoproj.io/admin-server.helm.image-name: image.repository
+    argocd-image-updater.argoproj.io/admin-server.helm.image-tag: image.tag
+    argocd-image-updater.argoproj.io/admin-server.update-strategy: digest
+    argocd-image-updater.argoproj.io/admin-server.allow-tags: latest
+    argocd-image-updater.argoproj.io/admin-server.pull-secret: pullsecret:argocd/dockerhub
+spec:
+  project: petclinic-dev
+  source:
+    repoURL: https://github.com/ThuanPhuc27/Petclinic_HelmChart
+    path: charts/admin-server
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace:  petclinic-dev   
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

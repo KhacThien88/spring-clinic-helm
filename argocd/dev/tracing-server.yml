@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tracing-server-dev
+  namespace: argocd
+spec:
+  project: petclinic-dev
+  source:
+    repoURL: https://github.com/ThuanPhuc27/Petclinic_HelmChart
+    path: charts/tracing-server
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace:  petclinic-dev  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

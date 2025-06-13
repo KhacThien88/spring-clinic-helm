@@ -1,0 +1,9 @@
+appName: tracing-server
+env: staging
+service:
+  port: 9411
+  image: openzipkin/zipkin
+ingress:
+  domainName: tracing-server.khacthienit.click
+  path: /
+  pathType: Prefix

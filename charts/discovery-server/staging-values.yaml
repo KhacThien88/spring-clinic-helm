@@ -1,0 +1,23 @@
+appName: petclinic-discovery-server
+env: staging
+image:
+  repository: thuanlp/spring-petclinic-discovery-server
+  tag: v1.0.0
+  pullSecret: dockerhub
+  pullPolicy: Always
+service:
+  port: 8761
+  type: ClusterIP
+initContainers:
+  - name: init-discovery-server
+    image: darthcabs/tiny-tools:1
+    command: ["sh", "-c", "until curl -s http://petclinic-config-server-service:8888/; do echo waiting for config server; sleep 5; done"]
+configMap:
+  discoveryServer:
+    create: true
+  name: petclinic-discovery-server-application-properties-configmap
+
+ingress:
+  domainName: discovery-server.khacthienit.click
+  path: /
+  pathType: Prefix

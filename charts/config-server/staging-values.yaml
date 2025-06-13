@@ -1,0 +1,20 @@
+appName: petclinic-config-server
+env: staging
+image:
+  repository: thuanlp/spring-petclinic-config-server
+  tag: v1.0.0
+  pullSecret: dockerhub
+  pullPolicy: Always
+service:
+  port: 8888
+  type: ClusterIP
+
+configMap:
+  configServer:
+    create: true
+  name: petclinic-config-server-application-properties-configmap
+
+ingress:
+  domainName: config-server.khacthienit.click
+  path: /
+  pathType: Prefix

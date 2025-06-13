@@ -1,0 +1,25 @@
+appName: petclinic-config-server
+env: dev
+image:
+  repository: thuanlp/spring-petclinic-config-server
+  tag: latest
+  pullSecret: dockerhub
+  pullPolicy: Always
+service:
+  port: 8888
+  type: ClusterIP
+
+configMap:
+  configServer:
+    create: true
+  name: petclinic-config-server-application-properties-configmap
+
+ingress:
+  domainName: config-server-dev.khacthienit.click
+  path: /
+  pathType: Prefix
+global:
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"

@@ -1,0 +1,12 @@
+{{- if .Values.configMap.vetsService.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Release.Namespace }}
+data:
+  application.properties: |
+    spring.application.name=vets-service
+    spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}
+    spring.cache.cache-names=vets
+{{- end }}
