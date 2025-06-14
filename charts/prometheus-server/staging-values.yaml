@@ -2,10 +2,17 @@ appName: prometheus-server
 env: staging
 service:
   port: 9090
-  image:
-    repository: prom/prometheus
-    tag: v2.53.0
+  image: prom/prometheus:latest
+configMap:
+  prometheus:
+    create: true
+  name: prometheus-server-configmap
 ingress:
   domainName: prometheus-server.khacthienit.click
   path: /
   pathType: Prefix
+global:
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"

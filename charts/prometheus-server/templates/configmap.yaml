@@ -1,0 +1,29 @@
+{{- if .Values.configMap.prometheus.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Release.Namespace }}
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+    scrape_configs:
+    - job_name: 'petclinic-services'
+      kubernetes_sd_configs:
+      - role: service
+        namespaces:
+          names:
+          - {{ .Release.Namespace }}
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app]
+        regex: petclinic-(api-gateway|customers-service|vets-service|visits-service|genai-service|admin-server|config-server|discovery-server)
+        action: keep
+      - source_labels: [__meta_kubernetes_service_port_number]
+        regex: (8080|8081|8082|8083|8084|9090|8888|8761)
+        action: keep
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: job
+      metrics_path: /actuator/prometheus
+{{- end }}
