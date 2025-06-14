@@ -13,7 +13,7 @@ spec:
 
   # Cho phép deploy ứng dụng từ các Git repo cụ thể
   sourceRepos:
-    - 'https://github.com/ThuanPhuc27/*'
+    - 'https://github.com/KhacThien88/*'
 
   # Cho phép sử dụng tài nguyên cluster và namespace
   clusterResourceWhitelist:

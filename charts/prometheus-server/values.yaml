@@ -6,7 +6,7 @@ service:
     repository: prom/prometheus
     tag: v2.53.0
 ingress:
-  domainName: tracing-server-dev.khacthienit.click
+  domainName: prometheus-server-dev.khacthienit.click
   path: /
   pathType: Prefix
 global:

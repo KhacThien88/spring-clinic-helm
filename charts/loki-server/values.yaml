@@ -1,12 +1,12 @@
-appName: prometheus-server
+appName: loki-server
 env: dev
 service:
   port: 3100
   image:
-    repository: prom/prometheus
-    tag: v2.53.0
+    repository: grafana/loki
+    tag: 3.1.1
 ingress:
-  domainName: prometheus-server-dev.khacthienit.click
+  domainName: loki-server-dev.khacthienit.click
   path: /
   pathType: Prefix
 global:
