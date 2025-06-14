@@ -1,7 +1,7 @@
 appName: petclinic-discovery-server
 env: staging
 image:
-  repository: thuanlp/spring-petclinic-discovery-server
+  repository: ktei8htop15122004/spring-petclinic-discovery-server
   tag: v1.0.0
   pullSecret: dockerhub
   pullPolicy: Always

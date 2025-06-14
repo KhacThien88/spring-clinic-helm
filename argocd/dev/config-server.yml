@@ -4,7 +4,7 @@ metadata:
   name: config-server-dev
   namespace: argocd   # namespace ArgoCD đang chạy, thường là argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: config-server=thuanlp/spring-petclinic-config-server:latest
+    argocd-image-updater.argoproj.io/image-list: config-server=ktei8htop15122004/spring-petclinic-config-server:latest
     argocd-image-updater.argoproj.io/config-server.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/config-server.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/config-server.update-strategy: digest

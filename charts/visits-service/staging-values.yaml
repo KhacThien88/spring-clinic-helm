@@ -2,7 +2,7 @@ appName: petclinic-visits-service
 env: staging
 
 image:
-  repository: thuanlp/spring-petclinic-visits-service
+  repository: ktei8htop15122004/spring-petclinic-visits-service
   tag: v1.0.0
   pullSecret: dockerhub
   pullPolicy: Always

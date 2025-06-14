@@ -6,7 +6,7 @@ global:
       operator: "Exists"
       effect: "NoSchedule"
 image:
-  repository: thuanlp/spring-petclinic-api-gateway
+  repository: ktei8htop15122004/spring-petclinic-api-gateway
   tag: latest
   pullSecret: dockerhub
   pullPolicy: Always

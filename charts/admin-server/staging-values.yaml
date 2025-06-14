@@ -4,7 +4,7 @@ service:
   port: 9090
   type: ClusterIP
 image:
-  repository: thuanlp/spring-petclinic-admin-server
+  repository: ktei8htop15122004/spring-petclinic-admin-server
   tag: v1.0.0
   pullSecret: dockerhub
   pullPolicy: Always

@@ -1,7 +1,7 @@
 appName: petclinic-api-gateway
 env: staging
 image:
-  repository: thuanlp/spring-petclinic-api-gateway
+  repository: ktei8htop15122004/spring-petclinic-api-gateway
   tag: v1.0.0
   pullSecret: dockerhub
   pullPolicy: Always

@@ -4,7 +4,7 @@ metadata:
   name: vets-service-dev
   namespace: argocd   # namespace ArgoCD đang chạy, thường là argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: vets-service=thuanlp/spring-petclinic-vets-service:latest
+    argocd-image-updater.argoproj.io/image-list: vets-service=ktei8htop15122004/spring-petclinic-vets-service:latest
     argocd-image-updater.argoproj.io/vets-service.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/vets-service.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/vets-service.update-strategy: digest

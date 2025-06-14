@@ -1,7 +1,7 @@
 appName: petclinic-customers-service
 env: staging
 image:
-  repository: thuanlp/spring-petclinic-customers-service
+  repository: ktei8htop15122004/spring-petclinic-customers-service
   tag: v1.0.0
   pullSecret: dockerhub
   pullPolicy: Always

@@ -4,7 +4,7 @@ metadata:
   name: discovery-server-dev
   namespace: argocd   # namespace ArgoCD đang chạy, thường là argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: discovery-server=thuanlp/spring-petclinic-discovery-server:latest
+    argocd-image-updater.argoproj.io/image-list: discovery-server=ktei8htop15122004/spring-petclinic-discovery-server:latest
     argocd-image-updater.argoproj.io/discovery-server.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/discovery-server.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/discovery-server.update-strategy: digest

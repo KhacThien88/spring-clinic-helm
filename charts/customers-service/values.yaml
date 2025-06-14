@@ -1,7 +1,7 @@
 appName: petclinic-customers-service
 env: dev
 image:
-  repository: thuanlp/spring-petclinic-customers-service
+  repository: ktei8htop15122004/spring-petclinic-customers-service
   tag: latest
   pullSecret: dockerhub
   pullPolicy: Always

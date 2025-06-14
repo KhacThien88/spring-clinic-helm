@@ -4,7 +4,7 @@ metadata:
   name: api-gateway-dev
   namespace: argocd   
   annotations:
-    argocd-image-updater.argoproj.io/image-list: api-gateway=thuanlp/spring-petclinic-api-gateway:latest
+    argocd-image-updater.argoproj.io/image-list: api-gateway=ktei8htop15122004/spring-petclinic-api-gateway:latest
     argocd-image-updater.argoproj.io/api-gateway.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/api-gateway.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/api-gateway.update-strategy: digest

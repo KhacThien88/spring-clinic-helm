@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ if eq .Values.appName "tracing-server" }}{{ .Values.appName }}{{ else }}{{ .Values.appName }}-service{{ end }}
+  name: "{{ .Values.appName }}-service"
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.appName }}

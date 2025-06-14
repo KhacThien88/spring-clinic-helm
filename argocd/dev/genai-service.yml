@@ -4,7 +4,7 @@ metadata:
   name: genai-service-dev
   namespace: argocd   # namespace ArgoCD đang chạy, thường là argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: genai-service=thuanlp/spring-petclinic-genai-service:latest
+    argocd-image-updater.argoproj.io/image-list: genai-service=ktei8htop15122004/spring-petclinic-genai-service:latest
     argocd-image-updater.argoproj.io/genai-service.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/genai-service.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/genai-service.update-strategy: digest

@@ -2,7 +2,7 @@ appName: petclinic-vets-service
 env: staging
 
 image:
-  repository: thuanlp/spring-petclinic-vets-service
+  repository: ktei8htop15122004/spring-petclinic-vets-service
   tag: v1.0.0
   pullSecret: dockerhub
   pullPolicy: Always
