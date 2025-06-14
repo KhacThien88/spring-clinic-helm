@@ -31,18 +31,18 @@ data:
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-genai-service'
       static_configs:
-      - targets: ['petclinic-genai-service-service:8084']
+      - targets: ['https://genai-service-review.khacthienit.click']
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-admin-server'
       static_configs:
-      - targets: ['petclinic-admin-server-service:9090']
+      - targets: ['https://admin-server-review.khacthienit.click']
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-config-server'
       static_configs:
-      - targets: ['petclinic-config-server-service:8888']
+      - targets: ['https://config-server-review.khacthienit.click']
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-discovery-server'
       static_configs:
-      - targets: ['petclinic-discovery-server-service:8761']
+      - targets: ['https://discovery-server-review.khacthienit.click']
       metrics_path: /actuator/prometheus
 {{- end }}
