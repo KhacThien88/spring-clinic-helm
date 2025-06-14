@@ -15,19 +15,19 @@ data:
       - targets: ['localhost:9090']
     - job_name: 'petclinic-api-gateway'
       static_configs:
-      - targets: ['petclinic-api-gateway-service:8080']
+      - targets: ['https://api-gateway-review.khacthienit.click']
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-customers-service'
       static_configs:
-      - targets: ['petclinic-customers-service-service:8081']
+      - targets: ['https://customers-service-review.khacthienit.click']
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-vets-service'
       static_configs:
-      - targets: ['petclinic-vets-service-service:8083']
+      - targets: ['https://vets-service-review.khacthienit.click']
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-visits-service'
       static_configs:
-      - targets: ['petclinic-visits-service-service:8082']
+      - targets: ['https://visits-service-review.khacthienit.click']
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-genai-service'
       static_configs:
