@@ -15,34 +15,42 @@ data:
       - targets: ['localhost:9090']
     - job_name: 'petclinic-api-gateway'
       static_configs:
-      - targets: ['https://api-gateway-review.khacthienit.click']
+      - targets: ['petclinic-api-gateway-service:8080']
       metrics_path: /actuator/prometheus
+      scheme: http
     - job_name: 'petclinic-customers-service'
       static_configs:
-      - targets: ['https://customers-service-review.khacthienit.click']
+      - targets: ['petclinic-customers-service-service:8081']
       metrics_path: /actuator/prometheus
+      scheme: http
     - job_name: 'petclinic-vets-service'
       static_configs:
-      - targets: ['https://vets-service-review.khacthienit.click']
+      - targets: ['petclinic-vets-service-service:8083']
       metrics_path: /actuator/prometheus
+      scheme: http
     - job_name: 'petclinic-visits-service'
       static_configs:
-      - targets: ['https://visits-service-review.khacthienit.click']
+      - targets: ['petclinic-visits-service-service:8082']
       metrics_path: /actuator/prometheus
+      scheme: http
     - job_name: 'petclinic-genai-service'
       static_configs:
-      - targets: ['https://genai-service-review.khacthienit.click']
+      - targets: ['petclinic-genai-service-service:8084']
       metrics_path: /actuator/prometheus
+      scheme: http
     - job_name: 'petclinic-admin-server'
       static_configs:
-      - targets: ['https://admin-server-review.khacthienit.click']
+      - targets: ['petclinic-admin-server-service:9090']
       metrics_path: /actuator/prometheus
+      scheme: http
     - job_name: 'petclinic-config-server'
       static_configs:
-      - targets: ['https://config-server-review.khacthienit.click']
+      - targets: ['petclinic-config-server-service:8888']
       metrics_path: /actuator/prometheus
+      scheme: http
     - job_name: 'petclinic-discovery-server'
       static_configs:
-      - targets: ['https://discovery-server-review.khacthienit.click']
+      - targets: ['petclinic-discovery-server-service:8761']
       metrics_path: /actuator/prometheus
+      scheme: http
 {{- end }}
