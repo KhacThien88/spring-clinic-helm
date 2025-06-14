@@ -10,20 +10,39 @@ data:
       scrape_interval: 15s
       evaluation_interval: 15s
     scrape_configs:
-    - job_name: 'petclinic-services'
-      kubernetes_sd_configs:
-      - role: service
-        namespaces:
-          names:
-          - {{ .Release.Namespace }}
-      relabel_configs:
-      - source_labels: [__meta_kubernetes_service_label_app]
-        regex: petclinic-(api-gateway|customers-service|vets-service|visits-service|genai-service|admin-server|config-server|discovery-server)
-        action: keep
-      - source_labels: [__meta_kubernetes_service_port_number]
-        regex: (8080|8081|8082|8083|8084|9090|8888|8761)
-        action: keep
-      - source_labels: [__meta_kubernetes_service_name]
-        target_label: job
+    - job_name: 'prometheus'
+      static_configs:
+      - targets: ['localhost:9090']
+    - job_name: 'petclinic-api-gateway'
+      static_configs:
+      - targets: ['petclinic-api-gateway-service:8080']
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-customers-service'
+      static_configs:
+      - targets: ['petclinic-customers-service-service:8081']
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-vets-service'
+      static_configs:
+      - targets: ['petclinic-vets-service-service:8083']
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-visits-service'
+      static_configs:
+      - targets: ['petclinic-visits-service-service:8082']
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-genai-service'
+      static_configs:
+      - targets: ['petclinic-genai-service-service:8084']
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-admin-server'
+      static_configs:
+      - targets: ['petclinic-admin-server-service:9090']
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-config-server'
+      static_configs:
+      - targets: ['petclinic-config-server-service:8888']
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-discovery-server'
+      static_configs:
+      - targets: ['petclinic-discovery-server-service:8761']
       metrics_path: /actuator/prometheus
 {{- end }}
