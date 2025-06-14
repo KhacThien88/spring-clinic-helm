@@ -7,6 +7,7 @@ metadata:
 data:
   application.properties: |
     spring.main.web-application-type=reactive
+    management.zipkin.tracing.endpoint=http://tracing-server-service:9411/api/v2/spans
     spring.application.name=genai-service
     spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/},optional:classpath:/creds.yaml
     spring.ai.chat.client.enabled=true

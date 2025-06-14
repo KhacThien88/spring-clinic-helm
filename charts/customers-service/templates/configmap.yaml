@@ -7,6 +7,7 @@ metadata:
 data:
   application.properties: |
     spring.application.name=customers-service
+    management.zipkin.tracing.endpoint=http://tracing-server-service:9411/api/v2/spans
     spring.zipkin.baseUrl=http://tracing-server-service:9411/api/v2/spans
     spring.sleuth.sampler.probability=1.0
     spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}

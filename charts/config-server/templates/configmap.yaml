@@ -7,7 +7,8 @@ metadata:
 data:
   application.properties: |
     server.port=8888
-    spring.zipkin.baseUrl=http://tracing-server-service.petclinic-review.svc.cluster.local:9411/
+    management.zipkin.tracing.endpoint=http://tracing-server-service:9411/api/v2/spans
+    spring.zipkin.baseUrl=http://tracing-server-service:9411/api/v2/spans
     spring.sleuth.sampler.probability=1.0
     spring.cloud.config.server.git.uri=https://github.com/KhacThien88/spring-clinic-config-server
     spring.cloud.config.server.git.default-label=main
