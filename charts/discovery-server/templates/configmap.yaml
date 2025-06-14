@@ -14,4 +14,5 @@ data:
     spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}
     logging.level.org.springframework.boot=INFO
     logging.level.org.springframework.web=INFO
+    management.endpoints.web.exposure.include=*
 {{- end }}

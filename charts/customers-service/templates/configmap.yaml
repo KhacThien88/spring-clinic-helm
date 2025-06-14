@@ -12,4 +12,5 @@ data:
     logging.level.io.micrometer.tracing=DEBUG
     logging.level.io.zipkin=DEBUG
     spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}
+    management.endpoints.web.exposure.include=*
 {{- end }}

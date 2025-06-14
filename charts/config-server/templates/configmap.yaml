@@ -13,4 +13,5 @@ data:
     logging.level.io.zipkin=DEBUG
     spring.cloud.config.server.git.uri=https://github.com/KhacThien88/spring-clinic-config-server
     spring.cloud.config.server.git.default-label=main
+    management.endpoints.web.exposure.include=*
 {{- end }}
