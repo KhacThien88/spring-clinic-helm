@@ -13,7 +13,7 @@ metadata:
 spec:
   project: petclinic-dev
   source:
-    repoURL: https://github.com/ThuanPhuc27/Petclinic_HelmChart
+    repoURL: https://github.com/KhacThien88/spring-clinic-helm
     path: charts/api-gateway
     targetRevision: main
     helm:
