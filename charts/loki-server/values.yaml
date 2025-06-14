@@ -1,0 +1,16 @@
+appName: prometheus-server
+env: dev
+service:
+  port: 3100
+  image:
+    repository: prom/prometheus
+    tag: v2.53.0
+ingress:
+  domainName: prometheus-server-dev.khacthienit.click
+  path: /
+  pathType: Prefix
+global:
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"

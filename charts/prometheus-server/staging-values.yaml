@@ -1,0 +1,11 @@
+appName: prometheus-server
+env: staging
+service:
+  port: 9090
+  image:
+    repository: prom/prometheus
+    tag: v2.53.0
+ingress:
+  domainName: prometheus-server.khacthienit.click
+  path: /
+  pathType: Prefix

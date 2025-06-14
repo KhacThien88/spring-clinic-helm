@@ -1,0 +1,22 @@
+appName: grafana-server
+env: staging
+service:
+  port: 3000
+  image:
+    repository: grafana/grafana
+    tag: 11.2.0
+  adminPassword: 111111aA
+  datasources:
+    prometheus:
+      url: http://prometheus-server-service:9090
+      type: prometheus
+    loki:
+      url: http:/loki-server-service:3100
+      type: loki
+    zipkin:
+      url: http://tracing-server-service:9411
+      type: zipkin
+ingress:
+  domainName: grafana-server.khacthienit.click
+  path: /
+  pathType: Prefix
