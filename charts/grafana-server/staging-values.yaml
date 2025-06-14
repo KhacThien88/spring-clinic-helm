@@ -2,9 +2,7 @@ appName: grafana-server
 env: staging
 service:
   port: 3000
-  image:
-    repository: grafana/grafana
-    tag: 11.2.0
+  image: grafana/grafana
   adminPassword: 111111aA
   datasources:
     prometheus:

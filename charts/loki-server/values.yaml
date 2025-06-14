@@ -2,9 +2,7 @@ appName: loki-server
 env: dev
 service:
   port: 3100
-  image:
-    repository: grafana/loki
-    tag: 3.1.1
+  image: grafana/loki:latest
 ingress:
   domainName: loki-server-dev.khacthienit.click
   path: /

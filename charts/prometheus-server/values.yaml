@@ -2,9 +2,7 @@ appName: prometheus-server
 env: dev
 service:
   port: 9090
-  image:
-    repository: prom/prometheus
-    tag: v2.53.0
+  image: prom/prometheus:latest
 ingress:
   domainName: prometheus-server-dev.khacthienit.click
   path: /
