@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.appName }}-{{ .Values.env }}-datasources"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.appName }}
+    env: {{ .Values.env }}
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: {{ .Values.service.datasources.prometheus.type }}
+      access: proxy
+      url: {{ .Values.service.datasources.prometheus.url }}
+      isDefault: true
+    - name: Loki
+      type: {{ .Values.service.datasources.loki.type }}
+      access: proxy
+      url: {{ .Values.service.datasources.loki.url }}
+      jsonData:
+        maxLines: 1000
+    - name: Zipkin
+      type: {{ .Values.service.datasources.zipkin.type }}
+      access: proxy
+      url: {{ .Values.service.datasources.zipkin.url }}

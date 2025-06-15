@@ -15,6 +15,7 @@ service:
       url: http://tracing-server-service:9411
       type: zipkin
 ingress:
+  enabled: true
   domainName: grafana-server-dev.khacthienit.click
   path: /
   pathType: Prefix
