@@ -13,6 +13,31 @@ data:
     - job_name: 'prometheus'
       static_configs:
       - targets: ['prometheus-server-service.petclinic-review.svc.cluster.local:9090']
+    - job_name: 'petclinic-api-gateway-static'
+      static_configs:
+      - targets: ['petclinic-api-gateway-service.petclinic-review.svc.cluster.local:8080']
+        labels:
+          app: petclinic-api-gateway
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-customers-service-static'
+      static_configs:
+      - targets: ['petclinic-customers-service-service.petclinic-review.svc.cluster.local:8081']
+        labels:
+          app: petclinic-customers-service
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-visits-service-static'
+      static_configs:
+      - targets: ['petclinic-visits-service-service.petclinic-review.svc.cluster.local:8082']
+        labels:
+          app: petclinic-visits-service
+      metrics_path: /actuator/prometheus
+    - job_name: 'petclinic-vets-service-static'
+      static_configs:
+      - targets: ['petclinic-vets-service-service.petclinic-review.svc.cluster.local:8083']
+        labels:
+          app: petclinic-vets-service
+      metrics_path: /actuator/prometheus
+    # Original service discovery jobs for reference
     - job_name: 'petclinic-api-gateway'
       kubernetes_sd_configs:
       - role: service
