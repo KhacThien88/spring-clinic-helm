@@ -1,20 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Values.appName }}-deployment"
+  name: "{{ .Values.appName }}-{{ .Values.env }}-deployment"
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.appName }}
+    env: {{ .Values.env }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas | default 1 }}
   selector:
     matchLabels:
       app: {{ .Values.appName }}
+      env: {{ .Values.env }}
   template:
     metadata:
       labels:
         app: {{ .Values.appName }}
+        env: {{ .Values.env }}
     spec:
+      {{- if .Values.global.tolerations }}
+      tolerations:
+        {{- toYaml .Values.global.tolerations | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Values.appName }}
           image: {{ .Values.service.image }}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.service.port }}
+          args:
+            - -config.file=/etc/loki/loki-config.yaml
+          volumeMounts:
+            - name: loki-config
+              mountPath: /etc/loki
+            - name: loki-storage
+              mountPath: /loki
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      volumes:
+        - name: loki-config
+          configMap:
+            name: {{ .Values.appName }}-{{ .Values.env }}-config
+        - name: loki-storage
+          emptyDir: {}  # Use PVC in production
