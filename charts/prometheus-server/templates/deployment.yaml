@@ -18,3 +18,13 @@ spec:
           image: {{ .Values.service.image }}
           ports:
             - containerPort: {{ .Values.service.port }}
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus/"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/prometheus/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-server-configmap
