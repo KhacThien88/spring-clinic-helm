@@ -28,6 +28,8 @@ data:
         separator: ':'
         regex: (.+);(.+)
         target_label: __address__
+      - target_label: __metrics_path__
+        replacement: /actuator/prometheus
       - action: labelmap
         regex: __meta_kubernetes_pod_label_(.+)
 {{- end }}
