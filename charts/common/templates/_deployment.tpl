@@ -17,6 +17,9 @@ spec:
       labels:
         app: {{ .Values.appName }}
         env: {{ .Values.env }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.service.port }}"
     spec:
       tolerations: {{ $.Values.global.tolerations | toYaml | nindent 8 }}
       affinity:
