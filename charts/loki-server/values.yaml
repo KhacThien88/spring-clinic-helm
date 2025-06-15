@@ -1,9 +1,11 @@
 appName: loki-server
 env: dev
+replicas: 1
 service:
   port: 3100
   image: grafana/loki:latest
 ingress:
+  enabled: true
   domainName: loki-server-dev.khacthienit.click
   path: /
   pathType: Prefix
@@ -12,3 +14,28 @@ global:
     - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
       effect: "NoSchedule"
+loki:
+  config: |
+    auth_enabled: false
+    server:
+      http_listen_port: 3100
+    common:
+      path_prefix: /loki
+      storage:
+        filesystem:
+          chunks_directory: /loki/chunks
+          rules_directory: /loki/rules
+      replication_factor: 1
+      ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: inmemory
+    schema_config:
+      configs:
+        - from: 2020-10-24
+          store: tsdb
+          object_store: filesystem
+          schema: v13
+          index:
+            prefix: index_
+            period: 24h

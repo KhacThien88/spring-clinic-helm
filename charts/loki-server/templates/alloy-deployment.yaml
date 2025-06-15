@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alloy-{{ .Values.env }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: alloy
+    env: {{ .Values.env }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alloy
+      env: {{ .Values.env }}
+  template:
+    metadata:
+      labels:
+        app: alloy
+        env: {{ .Values.env }}
+    spec:
+      serviceAccountName: alloy
+      {{- if .Values.global.tolerations }}
+      tolerations:
+        {{- toYaml .Values.global.tolerations | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: alloy
+          image: grafana/alloy:latest
+          args:
+            - run
+            - --stability.level=public-preview
+            - /etc/alloy/config.alloy
+          ports:
+            - containerPort: 12345
+          volumeMounts:
+            - name: alloy-config
+              mountPath: /etc/alloy
+            - name: varlog
+              mountPath: /var/log
+          securityContext:
+            privileged: true
+      volumes:
+        - name: alloy-config
+          configMap:
+            name: alloy-{{ .Values.env }}-config
+        - name: varlog
+          hostPath:
+            path: /var/log

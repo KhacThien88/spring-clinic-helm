@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.appName }}-{{ .Values.env }}-config"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.appName }}
+    env: {{ .Values.env }}
+data:
+  loki-config.yaml: {{ .Values.loki.config | nindent 4 }}
