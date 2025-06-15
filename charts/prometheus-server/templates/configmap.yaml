@@ -18,7 +18,7 @@ data:
       - role: pod
         namespaces:
           names:
-          - {{ .Release.Namespace }}
+          - '*'
       relabel_configs:
       - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
         action: keep
@@ -27,7 +27,12 @@ data:
         action: replace
         target_label: __address__
         regex: (.+)
-        replacement: $1:{{ .Values.service.port }}
+        replacement: $1:${1}
+      - source_labels: [__meta_kubernetes_pod_ip, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        separator: ':'
+        regex: (.+);(.+)
+        target_label: __address__
       - action: labelmap
         regex: __meta_kubernetes_pod_label_(.+)
 {{- end }}
