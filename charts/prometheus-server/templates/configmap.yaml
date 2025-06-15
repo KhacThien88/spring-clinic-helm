@@ -13,44 +13,18 @@ data:
     - job_name: 'prometheus'
       static_configs:
       - targets: ['localhost:9090']
-    - job_name: 'petclinic-api-gateway'
-      static_configs:
-      - targets: ['petclinic-api-gateway-service:8080']
-      metrics_path: /actuator/prometheus
-      scheme: http
-    - job_name: 'petclinic-customers-service'
-      static_configs:
-      - targets: ['petclinic-customers-service-service:8081']
-      metrics_path: /actuator/prometheus
-      scheme: http
-    - job_name: 'petclinic-vets-service'
-      static_configs:
-      - targets: ['petclinic-vets-service-service:8083']
-      metrics_path: /actuator/prometheus
-      scheme: http
-    - job_name: 'petclinic-visits-service'
-      static_configs:
-      - targets: ['petclinic-visits-service-service:8082']
-      metrics_path: /actuator/prometheus
-      scheme: http
-    - job_name: 'petclinic-genai-service'
-      static_configs:
-      - targets: ['petclinic-genai-service-service:8084']
-      metrics_path: /actuator/prometheus
-      scheme: http
-    - job_name: 'petclinic-admin-server'
-      static_configs:
-      - targets: ['petclinic-admin-server-service:9090']
-      metrics_path: /actuator/prometheus
-      scheme: http
-    - job_name: 'petclinic-config-server'
-      static_configs:
-      - targets: ['petclinic-config-server-service:8888']
-      metrics_path: /actuator/prometheus
-      scheme: http
-    - job_name: 'petclinic-discovery-server'
-      static_configs:
-      - targets: ['petclinic-discovery-server-service:8761']
-      metrics_path: /actuator/prometheus
-      scheme: http
+    - job_name: 'petclinic'
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: (.+):(?:\d+);(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
 {{- end }}
