@@ -1,12 +1,12 @@
 appName: loki-server
-env: dev
+env: staging
 replicas: 1
 service:
   port: 3100
   image: grafana/loki:latest
 ingress:
   enabled: true
-  domainName: loki-server-dev.khacthienit.click
+  domainName: loki-server-staging.khacthienit.click
   path: /
   pathType: Prefix
 global:
@@ -91,6 +91,6 @@ alloy:
     }
     loki.write "loki" {
       endpoint {
-        url = "http://loki-server-dev-service.grafana-loki.svc.cluster.local:3100/loki/api/v1/push"
+        url = "http://loki-server-staging-service.grafana-loki.svc.cluster.local:3100/loki/api/v1/push"
       }
     }
