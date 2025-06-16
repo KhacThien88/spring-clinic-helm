@@ -45,21 +45,6 @@ alloy:
       level  = "info"
       format = "logfmt"
     }
-    
-    otelcol.receiver.zipkin "zipkin" {
-      endpoint = "0.0.0.0:9411"
-    }
-    
-    otelcol.exporter.zipkin "zipkin_backend" {
-      endpoint = "http://zipkin-server:9411/api/v2/spans"
-      format   = "json"
-    }
-    
-    otelcol.pipeline "traces" {
-      receivers = [otelcol.receiver.zipkin.zipkin]
-      exporters = [otelcol.exporter.zipkin.zipkin_backend]
-    }
-    
     prometheus.scrape "app_metrics" {
       targets = [
         {
