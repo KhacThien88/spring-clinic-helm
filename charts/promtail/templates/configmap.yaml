@@ -14,7 +14,7 @@ data:
     positions:
       filename: /tmp/positions.yaml
     clients:
-      - url: {{ .Values.service.lokiUrl }}/loki/api/v1/push
+      - url: {{ .Values.service.lokiUrl }}
     scrape_configs:
       {{- range .Values.service.scrapeConfigs }}
       - job_name: {{ .job_name }}
