@@ -1,12 +1,13 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
-  name: "{{ .Values.appName }}-{{ .Values.env }}-daemonset"
+  name: "{{ .Values.appName }}-{{ .Values.env }}-deployment"
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.appName }}
     env: {{ .Values.env }}
 spec:
+  replicas: {{ .Values.replicas | default 1 }}
   selector:
     matchLabels:
       app: {{ .Values.appName }}
@@ -17,27 +18,23 @@ spec:
         app: {{ .Values.appName }}
         env: {{ .Values.env }}
     spec:
-      tolerations:
-        - key: "node-role.kubernetes.io/control-plane"
-          operator: "Exists"
-          effect: "NoSchedule"
       serviceAccountName: default
+      {{- if .Values.global.tolerations }}
+      tolerations:
+        {{- toYaml .Values.global.tolerations | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Values.appName }}
           image: {{ .Values.service.image }}
-          args:
-            - -config.file=/etc/promtail/promtail-config.yaml
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.service.port }}
           volumeMounts:
             - name: config
               mountPath: /etc/promtail
-            - name: logs
-              mountPath: /var/log
+          args:
+            - -config.file=/etc/promtail/promtail-config.yaml
       volumes:
         - name: config
           configMap:
             name: {{ .Values.appName }}-{{ .Values.env }}-config
-        - name: logs
-          hostPath:
-            path: /var/log
