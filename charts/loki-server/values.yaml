@@ -59,7 +59,7 @@ alloy:
     prometheus.scrape "app_metrics" {
       targets = [
         {
-          "__address__" = "http://petclinic-api-gateway-service:8080",
+          "__address__" = "petclinic-api-gateway-service:8080",
           "__metrics_path__" = "/actuator/prometheus"
         }
       ]
