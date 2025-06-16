@@ -18,6 +18,7 @@ spec:
         app: {{ .Values.appName }}
         env: {{ .Values.env }}
     spec:
+      serviceAccountName: default
       {{- if .Values.global.tolerations }}
       tolerations:
         {{- toYaml .Values.global.tolerations | nindent 8 }}
