@@ -9,12 +9,11 @@ service:
   scrapeConfigs:
     - job_name: zipkin
       static_configs:
-        - targets:
-            - localhost
+        - targets: [localhost]
           labels:
             job: zipkin
             app: tracing-server
-            __path__: /var/log/containers/tracing-server-deployment*.log
+          __path__: /var/log/containers/tracing-server-deployment*.log
       pipeline_stages:
         - regex:
             expression: '.*\[(?P<app>[^,]+),(?P<traceID>\w+),(?P<spanID>\w+)\].*'
