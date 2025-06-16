@@ -24,6 +24,9 @@ service:
             app: app
 ingress:
   enabled: false
+  domainName: promtail-dev.khacthienit.click
+  path: /
+  pathType: Prefix
 global:
   tolerations:
     - key: "node-role.kubernetes.io/control-plane"
