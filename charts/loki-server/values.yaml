@@ -47,7 +47,9 @@ alloy:
     }
     discovery.kubernetes "pods" {
       role = "pod"
-      namespaces = ["petclinic-review"]
+      namespaces {
+        names = ["petclinic-review"]
+      }
     }
     discovery.relabel "pods" {
       targets = discovery.kubernetes.pods.targets
@@ -91,6 +93,6 @@ alloy:
     }
     loki.write "loki" {
       endpoint {
-        url = "http://loki-server-dev-service.grafana-loki.svc.cluster.local:3100/loki/api/v1/push"
+        url = "http://loki-server-staging-service.grafana-loki.svc.cluster.local:3100/loki/api/v1/push"
       }
     }
