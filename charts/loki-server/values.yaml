@@ -93,6 +93,6 @@ alloy:
     }
     loki.write "loki" {
       endpoint {
-        url = "http://loki-server-staging-service.grafana-loki.svc.cluster.local:3100/loki/api/v1/push"
+        url = "http://loki-server-service:3100/loki/api/v1/push"
       }
     }
