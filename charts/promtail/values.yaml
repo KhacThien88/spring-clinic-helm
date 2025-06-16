@@ -14,7 +14,7 @@ service:
         - role: pod
           namespaces:
             names:
-              - "{{ .Release.Namespace }}"
+              - '*'
       relabel_configs:
         - source_labels: [__meta_kubernetes_pod_label_app]
           target_label: app
