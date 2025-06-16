@@ -34,6 +34,7 @@ spec:
               mountPath: /etc/promtail
           args:
             - -config.file=/etc/promtail/promtail-config.yaml
+            - -log.level=debug
       volumes:
         - name: config
           configMap:
