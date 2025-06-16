@@ -16,28 +16,16 @@ data:
     clients:
       - url: {{ .Values.service.lokiUrl }}/loki/api/v1/push
     scrape_configs:
-      - job_name: {{ .Values.service.labels.job }}
-        static_configs:
-          - targets:
-              - localhost
-            labels:
-              job: {{ .Values.service.labels.job }}
-              service: {{ .Values.service.labels.service }}
-              __path__: {{ join "," .Values.service.scrapePaths }}
+      {{- range .Values.service.scrapeConfigs }}
+      - job_name: {{ .job_name }}
+        {{- if .kubernetes_sd_configs }}
+        kubernetes_sd_configs:
+          {{- toYaml .kubernetes_sd_configs | nindent 10 }}
+        {{- end }}
+        {{- if .relabel_configs }}
+        relabel_configs:
+          {{- toYaml .relabel_configs | nindent 10 }}
+        {{- end }}
         pipeline_stages:
-          - json:
-              expressions:
-                traceID: traceID
-                message: message
-                service: service
-          - labels:
-              traceID: traceID
-              service: service
-          - match:
-              selector: '{job="{{ .Values.service.labels.job }}"}'
-              stages:
-                - regex:
-                    expression: "traceID=(?P<traceID>\w+)"
-                    source: message
-                - labels:
-                    traceID: traceID
+          {{- toYaml .pipeline_stages | nindent 10 }}
+      {{- end }}

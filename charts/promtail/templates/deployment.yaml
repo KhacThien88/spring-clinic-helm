@@ -31,8 +31,6 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/promtail
-            - name: logs
-              mountPath: /var/log
           args:
             - -config.file=/etc/promtail/promtail-config.yaml
           livenessProbe:
@@ -51,5 +49,3 @@ spec:
         - name: config
           configMap:
             name: {{ .Values.appName }}-{{ .Values.env }}-config
-        - name: logs
-          emptyDir: {}

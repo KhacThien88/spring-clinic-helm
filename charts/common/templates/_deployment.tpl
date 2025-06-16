@@ -18,6 +18,7 @@ spec:
         app: {{ .Values.appName }}
         env: {{ .Values.env }}
       annotations:
+        promtail.io/logs: "true"
         prometheus.io/scrape: "true"
         prometheus.io/port: "{{ .Values.service.port }}"
     spec:

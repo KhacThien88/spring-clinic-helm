@@ -6,11 +6,35 @@ service:
   port: 9080
   image: grafana/promtail:2.9.0
   lokiUrl: http://loki-server-service:3100
-  scrapePaths:
-    - /var/log/app.log
   labels:
-    service: my-service
     job: promtail
+  scrapeConfigs:
+    - job_name: petclinic
+      kubernetes_sd_configs:
+        - role: pod
+          namespaces:
+            names:
+              - "{{ .Release.Namespace }}"
+      relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_label_app]
+          target_label: app
+        - source_labels: [__meta_kubernetes_pod_annotation_promtail_io_logs]
+          action: keep
+          regex: true
+      pipeline_stages:
+        - regex:
+            expression: '.*\[(?P<app>[^,]+),(?P<traceID>\w+),(?P<spanID>\w+)\].*'
+            source: message
+        - labels:
+            traceID: traceID
+            app: app
+        - json:
+            expressions:
+              traceID: traceID
+              app: app
+        - labels:
+            traceID: traceID
+            app: app
 
 ingress:
   enabled: false
