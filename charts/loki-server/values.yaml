@@ -64,7 +64,7 @@ alloy:
       targets = [
         {
           "__address__" = "petclinic-api-gateway-service:8080",
-          "__metrics_path__" = "/actuator/prometheus"
+          "__metrics_path__" = "/actuator/prometheus",
         }
       ]
       forward_to = [prometheus.remote_write.prom.receiver]
