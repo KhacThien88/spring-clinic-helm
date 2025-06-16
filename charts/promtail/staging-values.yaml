@@ -1,11 +1,10 @@
 appName: promtail
-env: dev
-replicas: 1
+env: staging
 
 service:
   port: 9080
   image: grafana/promtail:2.9.0
-  lokiUrl: http://loki-server-service:3100
+  lokiUrl: http://loki-server-service:3100/loki/api/v1/push
   labels:
     job: promtail
   scrapeConfigs:
@@ -28,17 +27,11 @@ service:
         - labels:
             traceID: traceID
             app: app
-        - json:
-            expressions:
-              traceID: traceID
-              app: app
-        - labels:
-            traceID: traceID
-            app: app
+      __path__: /var/log/containers/*.log
 
 ingress:
   enabled: false
-  domainName: promtail-dev.khacthienit.click
+  domainName: promtail-staging.khacthienit.click
   path: /
   pathType: Prefix
 

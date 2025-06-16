@@ -1,13 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
-  name: "{{ .Values.appName }}-{{ .Values.env }}-deployment"
+  name: "{{ .Values.appName }}-{{ .Values.env }}-daemonset"
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.appName }}
     env: {{ .Values.env }}
 spec:
-  replicas: {{ .Values.replicas | default 1 }}
   selector:
     matchLabels:
       app: {{ .Values.appName }}
@@ -18,23 +17,31 @@ spec:
         app: {{ .Values.appName }}
         env: {{ .Values.env }}
     spec:
-      serviceAccountName: default
-      {{- if .Values.global.tolerations }}
       tolerations:
-        {{- toYaml .Values.global.tolerations | nindent 8 }}
-      {{- end }}
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      serviceAccountName: default
       containers:
         - name: {{ .Values.appName }}
           image: {{ .Values.service.image }}
-          imagePullPolicy: IfNotPresent
+          args:
+            - -config.file=/etc/promtail/promtail-config.yaml
           ports:
             - containerPort: {{ .Values.service.port }}
           volumeMounts:
             - name: config
               mountPath: /etc/promtail
-          args:
-            - -config.file=/etc/promtail/promtail-config.yaml
+            - name: logs
+              mountPath: /var/log
+          livenessProbe:
+            enabled: false
+          readinessProbe:
+            enabled: false
       volumes:
         - name: config
           configMap:
             name: {{ .Values.appName }}-{{ .Values.env }}-config
+        - name: logs
+          hostPath:
+            path: /var/log
