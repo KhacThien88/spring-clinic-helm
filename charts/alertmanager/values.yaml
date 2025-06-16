@@ -8,8 +8,8 @@ configMap:
     create: true
   name: alertmanager-configmap
   slack:
-    webhookUrl: 'https://hooks.slack.com/services/xxx/yyy/zzz' # Replace with your Slack webhook URL
-    channel: '#alerts'
+    webhookUrl: 'https://hooks.slack.com/services/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'
+    channel: '#social'
 ingress:
   enabled: true
   domainName: alertmanager-server-dev.khacthienit.click

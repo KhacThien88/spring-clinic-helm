@@ -18,7 +18,7 @@ data:
     - name: 'slack'
       slack_configs:
       - channel: {{ .Values.configMap.slack.channel | quote }}
-        text: "{{ .CommonAnnotations.description }}"
+        text: "Alert: {{ .CommonAnnotations.summary }}\nDetails: {{ .CommonAnnotations.description }}"
         title: "{{ .CommonAnnotations.summary }}"
         send_resolved: true
 {{- end }}
