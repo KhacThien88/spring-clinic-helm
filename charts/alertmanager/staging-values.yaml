@@ -1,0 +1,22 @@
+appName: alertmanager-server
+env: staging
+service:
+  port: 9093
+  image: prom/alertmanager:latest
+configMap:
+  alertmanager:
+    create: true
+  name: alertmanager-configmap
+  slack:
+    webhookUrl: 'https://hooks.slack.com/services/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'
+    channel: '#social'
+ingress:
+  enabled: true
+  domainName: alertmanager-server-staging.khacthienit.click
+  path: /
+  pathType: Prefix
+global:
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"

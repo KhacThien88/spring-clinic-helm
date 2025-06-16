@@ -1,0 +1,22 @@
+appName: alertmanager-server
+env: dev
+service:
+  port: 9093
+  image: prom/alertmanager:latest
+configMap:
+  alertmanager:
+    create: true
+  name: alertmanager-configmap
+  slack:
+    webhookUrl: 'https://hooks.slack.com/services/xxx/yyy/zzz' # Replace with your Slack webhook URL
+    channel: '#alerts'
+ingress:
+  enabled: true
+  domainName: alertmanager-server-dev.khacthienit.click
+  path: /
+  pathType: Prefix
+global:
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"

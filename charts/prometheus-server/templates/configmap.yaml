@@ -9,32 +9,50 @@ data:
     global:
       scrape_interval: 15s
       evaluation_interval: 15s
+    rule_files:
+      - /etc/prometheus/alerts.yml
+    alerting:
+      alertmanagers:
+      - static_configs:
+        - targets: ['alertmanager-service:9093']
     scrape_configs:
     - job_name: 'prometheus'
       static_configs:
-      - targets: ['prometheus-server-service.petclinic-review.svc.cluster.local:9090']
+      - targets: ['prometheus-server-service:9090']
     - job_name: 'petclinic-api-gateway-static'
       static_configs:
-      - targets: ['petclinic-api-gateway-service.petclinic-review.svc.cluster.local:8080']
+      - targets: ['petclinic-api-gateway-service:8080']
         labels:
           app: petclinic-api-gateway
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-customers-service-static'
       static_configs:
-      - targets: ['petclinic-customers-service-service.petclinic-review.svc.cluster.local:8081']
+      - targets: ['petclinic-customers-service-service:8081']
         labels:
           app: petclinic-customers-service
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-visits-service-static'
       static_configs:
-      - targets: ['petclinic-visits-service-service.petclinic-review.svc.cluster.local:8082']
+      - targets: ['petclinic-visits-service-service:8082']
         labels:
           app: petclinic-visits-service
       metrics_path: /actuator/prometheus
     - job_name: 'petclinic-vets-service-static'
       static_configs:
-      - targets: ['petclinic-vets-service-service.petclinic-review.svc.cluster.local:8083']
+      - targets: ['petclinic-vets-service-service:8083']
         labels:
           app: petclinic-vets-service
       metrics_path: /actuator/prometheus
+  alerts.yml: |
+    groups:
+    - name: http_errors
+      rules:
+      - alert: HighHttpErrorRate
+        expr: sum(rate(http_server_requests_seconds_count{status=~"4[0-9]{2}|5[0-9]{2}"}[30s])) > 10
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "High HTTP error rate detected"
+          description: "{{ $value }} HTTP error requests (4xx/5xx) per second in the last 30 seconds, exceeding threshold of 10."
 {{- end }}

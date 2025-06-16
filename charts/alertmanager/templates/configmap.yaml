@@ -1,0 +1,24 @@
+{{- if .Values.configMap.alertmanager.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Release.Namespace }}
+data:
+  alertmanager.yml: |
+    global:
+      slack_api_url: {{ .Values.configMap.slack.webhookUrl | quote }}
+    route:
+      group_by: ['alertname']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 1h
+      receiver: 'slack'
+    receivers:
+    - name: 'slack'
+      slack_configs:
+      - channel: {{ .Values.configMap.slack.channel | quote }}
+        text: "{{ .CommonAnnotations.description }}"
+        title: "{{ .CommonAnnotations.summary }}"
+        send_resolved: true
+{{- end }}
