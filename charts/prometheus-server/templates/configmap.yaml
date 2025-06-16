@@ -43,6 +43,12 @@ data:
         labels:
           app: petclinic-vets-service
       metrics_path: /actuator/prometheus
+    - job_name: promtail
+      static_configs:
+      - targets: ["promtail-service:9080"]
+        labels:
+          app: promtail
+      metrics_path: /metrics
   alerts.yml: |
     groups:
     - name: http_errors
