@@ -54,5 +54,5 @@ data:
           severity: warning
         annotations:
           summary: "High HTTP error rate detected"
-          description: "{{ $value }} HTTP error requests (4xx/5xx) per second in the last 30 seconds, exceeding threshold of 10."
+          description: "HTTP error requests (4xx/5xx) per second in the last 30 seconds, exceeding threshold of 10."
 {{- end }}
