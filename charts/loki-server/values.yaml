@@ -114,7 +114,7 @@ alloy:
       forward_to = [loki.process.process_logs.receiver]
     }
     loki.process "process_logs" {
-      stage.docker {}  # Parse Docker JSON logs
+      stage.docker {}
       stage.regex {
         expression = ".*traceID=(?P<traceID>[a-z0-9]+).*"
       }
