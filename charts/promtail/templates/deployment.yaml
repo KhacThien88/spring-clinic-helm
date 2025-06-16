@@ -34,18 +34,6 @@ spec:
               mountPath: /etc/promtail
           args:
             - -config.file=/etc/promtail/promtail-config.yaml
-          livenessProbe:
-            httpGet:
-              path: /metrics
-              port: {{ .Values.service.port }}
-            initialDelaySeconds: 60
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /metrics
-              port: {{ .Values.service.port }}
-            initialDelaySeconds: 30
-            periodSeconds: 5
       volumes:
         - name: config
           configMap:
