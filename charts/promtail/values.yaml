@@ -1,5 +1,6 @@
 appName: promtail
 env: dev
+
 service:
   port: 9080
   image: grafana/promtail:2.9.0
@@ -7,13 +8,18 @@ service:
   labels:
     job: promtail
   scrapeConfigs:
-    - job_name: zipkin
-      static_configs:
-        - targets: [localhost]
-          labels:
-            job: zipkin
-            app: tracing-server
-          __path__: /var/log/containers/tracing-server-deployment*.log
+    - job_name: petclinic
+      kubernetes_sd_configs:
+        - role: pod
+          namespaces:
+            names:
+              - '*'
+      relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_label_app]
+          target_label: app
+        - source_labels: [__meta_kubernetes_pod_annotation_promtail_io_logs]
+          action: keep
+          regex: true
       pipeline_stages:
         - regex:
             expression: '.*\[(?P<app>[^,]+),(?P<traceID>\w+),(?P<spanID>\w+)\].*'
@@ -21,11 +27,14 @@ service:
         - labels:
             traceID: traceID
             app: app
+      __path__: /var/log/containers/*.log
+
 ingress:
   enabled: false
   domainName: promtail-dev.khacthienit.click
   path: /
   pathType: Prefix
+
 global:
   tolerations:
     - key: "node-role.kubernetes.io/control-plane"
