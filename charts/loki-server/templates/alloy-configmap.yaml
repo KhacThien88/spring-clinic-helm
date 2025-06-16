@@ -7,4 +7,5 @@ metadata:
     app: alloy
     env: {{ .Values.env }}
 data:
-  config.alloy: {{ .Values.alloy.config | toYaml | quote }}
+  config.alloy: |
+    {{- .Values.alloy.config | nindent 8 }}
