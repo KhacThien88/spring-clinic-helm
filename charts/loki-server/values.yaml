@@ -45,6 +45,32 @@ alloy:
       level  = "info"
       format = "logfmt"
     }
+    otelcol.receiver.zipkin "zipkin" {
+      endpoint = "0.0.0.0:9411"
+    }
+    otelcol.exporter.zipkin "zipkin_backend" {
+      endpoint = "http://zipkin-server:9411/api/v2/spans"
+      format   = "json"
+    }
+    otelcol.pipeline "traces" {
+      receivers = [otelcol.receiver.zipkin.zipkin]
+      exporters = [otelcol.exporter.zipkin.zipkin_backend]
+    }
+    prometheus.scrape "app_metrics" {
+      targets = [
+        {
+          "__address__" = "http://petclinic-api-gateway-service:8080",
+          "__metrics_path__" = "/actuator/prometheus"
+        }
+      ]
+      forward_to = [prometheus.remote_write.prom.receiver]
+    }
+
+    prometheus.remote_write "prom" {
+      endpoint {
+        url = "http://prometheus-server:9090/api/v1/write"
+      }
+    }
     discovery.kubernetes "pods" {
       role = "pod"
       namespaces {
@@ -88,7 +114,10 @@ alloy:
       forward_to = [loki.process.process_logs.receiver]
     }
     loki.process "process_logs" {
-      stage.docker {}
+      stage.docker {}  # Parse Docker JSON logs
+      stage.regex {
+        expression = ".*traceID=(?P<traceID>[a-z0-9]+).*"
+      }
       forward_to = [loki.write.loki.receiver]
     }
     loki.write "loki" {
