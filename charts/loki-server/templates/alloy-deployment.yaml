@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: alloy-{{ .Values.env }}-deployment
+  name: alloy-deployment
   namespace: {{ .Release.Namespace }}
   labels:
     app: alloy
@@ -38,11 +38,11 @@ spec:
             - name: varlog
               mountPath: /var/log
           securityContext:
-            privileged: true
+            runAsUser: 0
       volumes:
         - name: alloy-config
           configMap:
-            name: alloy-{{ .Values.env }}-config
+            name: alloy-config
         - name: varlog
           hostPath:
             path: /var/log

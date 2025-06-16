@@ -7,4 +7,5 @@ metadata:
     app: {{ .Values.appName }}
     env: {{ .Values.env }}
 data:
-  loki-config.yaml: {{ .Values.loki.config | toYaml | quote }}
+  loki-config.yaml: |-
+    {{ .Values.loki.config | nindent 4 }}

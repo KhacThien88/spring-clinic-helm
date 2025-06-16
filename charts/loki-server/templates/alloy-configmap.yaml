@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: alloy-{{ .Values.env }}-config
+  name: alloy-config
   namespace: {{ .Release.Namespace }}
   labels:
     app: alloy

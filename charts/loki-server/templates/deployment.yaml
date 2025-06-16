@@ -30,6 +30,7 @@ spec:
             - containerPort: {{ .Values.service.port }}
           args:
             - -config.file=/etc/loki/loki-config.yaml
+            - -config.expand-env=true
           volumeMounts:
             - name: loki-config
               mountPath: /etc/loki
@@ -46,4 +47,4 @@ spec:
           configMap:
             name: {{ .Values.appName }}-{{ .Values.env }}-config
         - name: loki-storage
-          emptyDir: {}  # Use PVC in production
+          emptyDir: {}
