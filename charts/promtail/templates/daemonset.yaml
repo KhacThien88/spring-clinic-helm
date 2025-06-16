@@ -34,10 +34,6 @@ spec:
               mountPath: /etc/promtail
             - name: logs
               mountPath: /var/log
-          livenessProbe:
-            enabled: false
-          readinessProbe:
-            enabled: false
       volumes:
         - name: config
           configMap:
