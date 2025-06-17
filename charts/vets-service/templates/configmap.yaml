@@ -3,19 +3,13 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Values.configMap.name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
 data:
   application.properties: |
     spring.application.name=vets-service
+    spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}
     management.tracing.sampling.probability=1.0
     management.zipkin.tracing.endpoint=http://tracing-server-service:9411/api/v2/spans
-    logging.level.io.micrometer.tracing=DEBUG
-    logging.level.io.zipkin=DEBUG
-    spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}
-    spring.sleuth.enabled=true
-    spring.sleuth.sampler.probability=1.0
-    spring.sleuth.opentelemetry.enabled=true
-    logging.file.name=/tmp/vets.log
     management.endpoints.web.exposure.include=*
   logback-spring.xml: |
     <?xml version="1.0" encoding="UTF-8"?>
@@ -48,5 +42,7 @@ data:
         <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>
         <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>
         <logger name="org.springframework.boot.actuate.endpoint.jmx" level="WARN"/>
+        <logger name="io.micrometer.tracing" level="DEBUG"/>
+        <logger name="io.zipkin" level="DEBUG"/>
     </configuration>
 {{- end }}
