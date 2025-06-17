@@ -1,16 +1,21 @@
-appName: prometheus-server
+appName: otel-collector
 env: staging
 service:
-  port: 9090
-  image: prom/prometheus:latest
+  port: 4317
+  zipkinPort: 9411
+  metricsPort: 8889
+  image: otel/opentelemetry-collector-contrib:latest
+  type: ClusterIP
 configMap:
-  prometheus:
-    create: true
-  name: prometheus-server-configmap
+  create: true
+  name: otel-collector-configmap
 ingress:
-  domainName: prometheus-server.khacthienit.click
+  enabled: true
+  domainName: otel-collector-server-staging.khacthienit.click
   path: /
   pathType: Prefix
+loki:
+  endpoint: "http://loki-server-service:3100/loki/api/v1/push"
 global:
   tolerations:
     - key: "node-role.kubernetes.io/control-plane"
