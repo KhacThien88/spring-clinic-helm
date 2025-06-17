@@ -18,7 +18,7 @@ initContainers:
 configMap:
   customersService:
     create: true
-  name: petclinic-customers-service-application-properties-configmap
+    name: petclinic-customers-service-application-properties-configmap
 
 ingress:
   domainName: customer-service.khacthienit.click
