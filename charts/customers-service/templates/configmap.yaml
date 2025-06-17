@@ -15,7 +15,6 @@ data:
     spring.sleuth.enabled=true
     spring.sleuth.sampler.probability=1.0
     spring.sleuth.opentelemetry.enabled=true
-    logging.file.name=/tmp/customers.log
     management.endpoints.web.exposure.include=*
   logback-spring.xml: |
     <?xml version="1.0" encoding="UTF-8"?>

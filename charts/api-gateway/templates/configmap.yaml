@@ -39,7 +39,6 @@ data:
     management.zipkin.tracing.endpoint=http://tracing-server-service:9411/api/v2/spans
     logging.level.io.micrometer.tracing=DEBUG
     logging.level.io.zipkin=DEBUG
-    logging.file.name=/tmp/api-gateway.log
     management.endpoints.web.exposure.include=*
   logback-spring.xml: |
     <?xml version="1.0" encoding="UTF-8"?>
