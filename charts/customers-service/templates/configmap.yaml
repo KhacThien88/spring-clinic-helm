@@ -12,5 +12,12 @@ data:
     logging.level.io.micrometer.tracing=DEBUG
     logging.level.io.zipkin=DEBUG
     spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}
+    spring.sleuth.enabled=true
+    spring.sleuth.sampler.probability=1.0
+    spring.sleuth.opentelemetry.enabled=true
+    logging.pattern.console=%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5p){} %clr(${PID:-}){magenta} %clr(--- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%15.15t]){faint} %clr(traceID=%X{traceId}){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx
+    logging.pattern.file=%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p ${PID:-} --- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%t] traceID=%X{traceId} %-40.40logger{39} : %m%n%wEx
+    logging.file.name=/tmp/customers.log
+    
     management.endpoints.web.exposure.include=*
 {{- end }}

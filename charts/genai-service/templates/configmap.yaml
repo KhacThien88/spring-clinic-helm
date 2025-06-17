@@ -7,12 +7,16 @@ metadata:
 data:
   application.properties: |
     spring.main.web-application-type=reactive
-    management.tracing.sampling.probability=1.0
-    management.zipkin.tracing.endpoint=http://tracing-server-service:9411/api/v2/spans
-    logging.level.io.micrometer.tracing=DEBUG
-    logging.level.io.zipkin=DEBUG
     spring.application.name=genai-service
     spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/},optional:classpath:/creds.yaml
+    
+    spring.sleuth.enabled=true
+    spring.sleuth.sampler.probability=1.0
+    spring.sleuth.opentelemetry.enabled=true
+    
+    management.tracing.sampling.probability=1.0
+    management.zipkin.tracing.endpoint=http://tracing-server-service:9411/api/v2/spans
+    
     spring.ai.chat.client.enabled=true
     spring.ai.azure.openai.api-key="kh"
     spring.ai.azure.openai.endpoint="kh"
@@ -21,6 +25,13 @@ data:
     spring.ai.openai.api-key="kj"
     spring.ai.openai.chat.options.temperature=0.7
     spring.ai.openai.chat.options.model=gpt-4o-mini
+    
+    logging.level.io.micrometer.tracing=DEBUG
+    logging.level.io.zipkin=DEBUG
     logging.level.org.springframework.ai.chat.client.advisor=DEBUG
+    logging.pattern.console=%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5p){} %clr(${PID:-}){magenta} %clr(--- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%15.15t]){faint} %clr(traceID=%X{traceId}){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx
+    logging.pattern.file=%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p ${PID:-} --- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%t] traceID=%X{traceId} %-40.40logger{39} : %m%n%wEx
+    logging.file.name=/tmp/genai.log
+    
     management.endpoints.web.exposure.include=*
 {{- end }}

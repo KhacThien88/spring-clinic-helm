@@ -38,9 +38,19 @@ data:
     spring.cloud.gateway.routes[3].predicates[0]=Path=/api/genai/**
     spring.cloud.gateway.routes[3].filters[0]=StripPrefix=2
     spring.cloud.gateway.routes[3].filters[1]=CircuitBreaker=name=genaiCircuitBreaker,fallbackUri=/fallback
+    
+    spring.sleuth.enabled=true
+    spring.sleuth.sampler.probability=1.0
+    spring.sleuth.opentelemetry.enabled=true
+    
     management.tracing.sampling.probability=1.0
     management.zipkin.tracing.endpoint=http://tracing-server-service:9411/api/v2/spans
+    
     logging.level.io.micrometer.tracing=DEBUG
     logging.level.io.zipkin=DEBUG
+    logging.pattern.console=%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5p){} %clr(${PID:-}){magenta} %clr(--- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%15.15t]){faint} %clr(traceID=%X{traceId}){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx
+    logging.pattern.file=%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p ${PID:-} --- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%t] traceID=%X{traceId} %-40.40logger{39} : %m%n%wEx
+    logging.file.name=/tmp/api-gateway.log
+    
     management.endpoints.web.exposure.include=*
 {{- end }}
