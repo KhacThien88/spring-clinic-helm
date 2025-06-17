@@ -1,0 +1,44 @@
+{{- if .Values.configMap.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Release.Namespace }}
+data:
+  otel-collector-config.yaml: |
+    receivers:
+      zipkin:
+        endpoint: 0.0.0.0:{{ .Values.service.zipkinPort }}
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:{{ .Values.service.port }}
+          http:
+            endpoint: 0.0.0.0:4318
+    processors:
+      batch:
+        timeout: 5s
+        send_batch_size: 1000
+    exporters:
+      prometheus:
+        endpoint: "0.0.0.0:{{ .Values.service.metricsPort }}"
+      loki:
+        endpoint: "{{ .Values.loki.endpoint }}"
+        format: json
+      logging:
+        loglevel: debug
+    service:
+      pipelines:
+        traces:
+          receivers: [zipkin, otlp]
+          processors: [batch]
+          exporters: [logging]
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [prometheus, logging]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [loki, logging]
+{{- end }}

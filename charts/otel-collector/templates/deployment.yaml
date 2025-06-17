@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      tolerations: {{ toYaml .Values.global.tolerations | nindent 8 }}
+      containers:
+        - name: {{ .Values.appName }}
+          image: {{ .Values.service.image }}
+          args:
+            - --config=/conf/otel-collector-config.yaml
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: otlp-grpc
+            - containerPort: {{ .Values.service.zipkinPort }}
+              name: zipkin
+            - containerPort: 4318
+              name: otlp-http
+            - containerPort: {{ .Values.service.metricsPort }}
+              name: prometheus
+          resources:
+            {{ toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /conf
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.configMap.name }}

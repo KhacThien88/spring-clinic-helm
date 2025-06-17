@@ -110,7 +110,13 @@ alloy:
     loki.process "process_logs" {
       stage.docker {}
       stage.regex {
-        expression = ".*traceID=(?P<traceID>[a-z0-9]+).*"
+        expression = ".*traceID=(?P<traceID>[0-9a-f]{32}).*"
+        output = "traceID"
+      }
+      stage.labels {
+        values = {
+          traceID = "",
+        }
       }
       forward_to = [loki.write.loki.receiver]
     }
