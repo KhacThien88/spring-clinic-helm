@@ -111,11 +111,10 @@ alloy:
       stage.docker {}
       stage.regex {
         expression = ".*traceID=(?P<traceID>[0-9a-f]{32}).*"
-        output = "traceID"
       }
       stage.labels {
         values = {
-          traceID = "",
+          traceID = "traceID",
         }
       }
       forward_to = [loki.write.loki.receiver]
