@@ -1,56 +1,70 @@
-{{- if .Values.configMap.apiGateway.create }}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.configMap.name }}
-  namespace: {{ .Release.Namespace }}
 data:
   application.properties: |
     spring.application.name=api-gateway
     spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}
-    
     spring.cloud.gateway.default-filters[0].name=CircuitBreaker
     spring.cloud.gateway.default-filters[0].args.name=defaultCircuitBreaker
     spring.cloud.gateway.default-filters[0].args.fallbackUri=forward:/fallback
-    
     spring.cloud.gateway.default-filters[1].name=Retry
     spring.cloud.gateway.default-filters[1].args.retries=1
     spring.cloud.gateway.default-filters[1].args.statuses=SERVICE_UNAVAILABLE
     spring.cloud.gateway.default-filters[1].args.methods=POST
-    
     spring.cloud.gateway.routes[0].id=vets-service
     spring.cloud.gateway.routes[0].uri=http://petclinic-vets-service-service:8083
     spring.cloud.gateway.routes[0].predicates[0]=Path=/api/vet/**
     spring.cloud.gateway.routes[0].filters[0]=StripPrefix=2
-    
     spring.cloud.gateway.routes[1].id=visits-service
     spring.cloud.gateway.routes[1].uri=http://petclinic-visits-service-service:8082
     spring.cloud.gateway.routes[1].predicates[0]=Path=/api/visit/**
     spring.cloud.gateway.routes[1].filters[0]=StripPrefix=2
-    
     spring.cloud.gateway.routes[2].id=customers-service
     spring.cloud.gateway.routes[2].uri=http://petclinic-customers-service-service:8081
     spring.cloud.gateway.routes[2].predicates[0]=Path=/api/customer/**
     spring.cloud.gateway.routes[2].filters[0]=StripPrefix=2
-    
     spring.cloud.gateway.routes[3].id=genai-service
     spring.cloud.gateway.routes[3].uri=http://petclinic-genai-service-service:8084
     spring.cloud.gateway.routes[3].predicates[0]=Path=/api/genai/**
     spring.cloud.gateway.routes[3].filters[0]=StripPrefix=2
     spring.cloud.gateway.routes[3].filters[1]=CircuitBreaker=name=genaiCircuitBreaker,fallbackUri=/fallback
-    
     spring.sleuth.enabled=true
     spring.sleuth.sampler.probability=1.0
     spring.sleuth.opentelemetry.enabled=true
-    
     management.tracing.sampling.probability=1.0
     management.zipkin.tracing.endpoint=http://tracing-server-service:9411/api/v2/spans
-    
     logging.level.io.micrometer.tracing=DEBUG
     logging.level.io.zipkin=DEBUG
-    logging.pattern.console=%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5p){} %clr(${PID:-}){magenta} %clr(--- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%15.15t]){faint} %clr(traceID=%X{traceId}){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx
-    logging.pattern.file=%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p ${PID:-} --- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%t] traceID=%X{traceId} %-40.40logger{39} : %m%n%wEx
     logging.file.name=/tmp/api-gateway.log
-    
     management.endpoints.web.exposure.include=*
+  logback-spring.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <configuration>
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+        <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5p){} %clr(${PID:-}){magenta} %clr(--- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%15.15t]){faint} %clr(traceID=%X{traceId}){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"/>
+        <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p ${PID:-} --- %esb(){APPLICATION_NAME}%esb{APPLICATION_GROUP}[%t] traceID=%X{traceId} %-40.40logger{39} : %m%n%wEx"/>
+        <appender name="API_GATEWAY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/tmp/api-gateway.log</file>
+            <encoder>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+                <charset>UTF-8</charset>
+            </encoder>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>/tmp/api-gateway.log.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+                <maxHistory>7</maxHistory>
+                <totalSizeCap>0</totalSizeCap>
+            </rollingPolicy>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="API_GATEWAY_FILE"/>
+        </root>
+        <logger name="org.apache.catalina.startup.DigesterFactory" level="ERROR"/>
+        <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>
+        <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>
+        <logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"/>
+        <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>
+        <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>
+        <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>
+        <logger name="org.springframework.boot.actuate.endpoint.jmx" level="WARN"/>
+    </configuration>
 {{- end }}
