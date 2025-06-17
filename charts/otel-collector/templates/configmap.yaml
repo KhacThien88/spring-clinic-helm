@@ -24,7 +24,6 @@ data:
         endpoint: "0.0.0.0:{{ .Values.service.metricsPort }}"
       loki:
         endpoint: "{{ .Values.loki.endpoint }}"
-        format: json
       debug:
         verbosity: detailed
     service:
