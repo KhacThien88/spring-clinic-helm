@@ -14,5 +14,23 @@ data:
     spring.config.import=optional:configserver:${CONFIG_SERVER_URL:http://petclinic-config-server-service:8888/}
     logging.level.org.springframework.boot=INFO
     logging.level.org.springframework.web=INFO
-    management.endpoints.web.exposure.include=*
+    management.endpoints.web.exposure.include="*"
+    management.endpoint.health.show-details=always
+    management.tracing.enabled=true
+    management.tracing.sampling.probability=1.0
+    management.zipkin.tracing.enabled=true
+    management.zipkin.tracing.endpoint=http://tracing-server-service.default.svc.cluster.local:9411/api/v2/spans
+    management.metrics.distribution.percentiles-histogram.http.server.requests=true
+    management.metrics.enable.exemplars=true
+    management.endpoint.prometheus.enabled=true
+    management.endpoints.web.exposure.include=prometheus
+    
+    logging.pattern.console=%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5p) level="%p" time="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}" service="${spring.application.name}" traceId="%X{traceId:-}" spanId="%X{spanId:-}" thread="%t" logger="%logger{39}" message="%m"%n
+    logging.pattern.file=%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} level="%p" time="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}" service="${spring.application.name}" traceId="%X{traceId:-}" spanId="%X{spanId:-}" thread="%t" logger="%logger{39}" message="%m"%n
+    
+    logging.level.io.micrometer.tracing=${LOGGING_LEVEL_IO_MICROMETER_TRACING:DEBUG}
+    logging.level.org.springframework.web=DEBUG
+    
+    logging.charset.console=UTF-8
+    logging.charset.file=UTF-8
 {{- end }}
